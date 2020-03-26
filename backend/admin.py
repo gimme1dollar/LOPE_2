@@ -1,4 +1,4 @@
 from django.contrib import admin
-from .models import MEME
+from .models import Meme
 
-admin.site.register(MEME)
+admin.site.register(Meme)

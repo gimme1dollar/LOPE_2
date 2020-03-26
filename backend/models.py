@@ -1,7 +1,7 @@
 from django.db import models
 
 
-class MEME(models.Model):
+class Meme(models.Model):
     TYPE_CHOICES = [
         ('PROJECT', 'project'),
         ('CLUSTER', 'cluster')

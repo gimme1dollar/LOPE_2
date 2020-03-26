@@ -1,8 +1,8 @@
-from .models import MEME
+from .models import Meme
 from rest_framework import serializers
 
 
-class MEMESerializer(serializers.ModelSerializer):
+class MemeSerializer(serializers.ModelSerializer):
     class Meta:
-        model = MEME
+        model = Meme
         fields = ['id', 'name', 'type', 'level', 'parent', 'state']

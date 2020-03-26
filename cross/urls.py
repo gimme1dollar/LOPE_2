@@ -6,7 +6,7 @@ from rest_framework import routers
 from backend import views
 
 router = routers.DefaultRouter()
-router.register(r'memes', views.MEMEViewSet)
+router.register(r'memes', views.MemeViewSet)
 
 urlpatterns = [
     path('api/', include(router.urls)),
