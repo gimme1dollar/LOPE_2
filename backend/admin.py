@@ -1,3 +1,4 @@
 from django.contrib import admin
+from .models import MEME
 
-# Register your models here.
+admin.site.register(MEME)
