@@ -1,8 +1,6 @@
 <template>
   <div id="app">
   <v-app>
-  <v-navigation-drawer app/>
-
   <v-app-bar app/>
 
   <v-content>
