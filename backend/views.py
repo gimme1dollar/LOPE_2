@@ -1,16 +1,11 @@
-from django.shortcuts import render
 from .models import Meme, Detail
-from rest_framework import viewsets, permissions
+from rest_framework.views import APIView
+from rest_framework.response import Response
 from .serializers import MemeSerializer, DetailSerializer
 
 
-class MemeViewSet(viewsets.ModelViewSet):
-    queryset = Meme.objects.all()
-    serializer_class = MemeSerializer
-    permission_classes = [permissions.AllowAny]
-
-
-class DetailViewSet(viewsets.ModelViewSet):
-    queryset = Detail.objects.all()
-    serializer_class = DetailSerializer
-    permission_classes = [permissions.AllowAny]
+class MemeList(APIView):
+    def get(self, request, format=None):
+        queryset = Meme.objects.all()
+        serializer = MemeSerializer(queryset, many=True)
+        return Response(serializer.data)
