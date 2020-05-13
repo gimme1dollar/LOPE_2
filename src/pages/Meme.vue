@@ -1,16 +1,19 @@
 <template>
     <v-card>
     <v-toolbar flat color="primary" dark>
-      <v-toolbar-title>{{ id }}</v-toolbar-title>
+      <v-toolbar-title>FLEMG</v-toolbar-title>
     </v-toolbar>
     <v-tabs vertical>
-      <v-tab v-for="detail in details" v-bind:key="detail.id">
+      <v-tab v-for="detail in GetCategories(details)" v-bind:key="detail.category">
         {{ detail.category }}
       </v-tab>
 
-      <v-tab-item v-for="detail in details" v-bind:key="detail.id">
+      <v-tab-item v-for="detail in GetCategories(details)" v-bind:key="detail.category">
         <v-card flat>
-          <h1>hello, world!</h1>
+          <div v-for="{ summary, description, id} in detail.contents" :key="id">
+            <h3>{{ summary }}</h3>
+            <p>{{ description }}</p>
+          </div>
         </v-card>
       </v-tab-item>
     </v-tabs>
@@ -18,9 +21,9 @@
 </template>
 
 <script>
-  import axios from 'axios'
+import axios from 'axios'
 
-  export default {
+export default {
   props: ['id'],
   data () {
     return {
@@ -35,11 +38,36 @@
       var app = this
       axios.get(process.env.API_URL + '/detail/meme/' + app.id)
         .then(function (response) {
-          app.details = response.data
+          var details = new Map()
+          response.data.forEach(detail => {
+            if (!details.has(detail.category)) {
+              details.set(detail.category, [])
+            }
+
+            details.get(detail.category).push({
+              'summary': detail.summary,
+              'description': detail.description
+            })
+          })
+
+          app.details = details
         })
         .catch(function (error) {
           console.log(error)
         })
+    },
+    GetCategories (m) {
+      if (m != null) {
+        var arr = []
+        m.forEach((value, key) => {
+          arr.push({
+            'category': key,
+            'contents': value
+          })
+        })
+        return arr
+      }
+      return null
     }
   },
   name: 'Meme'
