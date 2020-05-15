@@ -1,7 +1,7 @@
 <template>
     <v-card>
     <v-toolbar flat color="primary" dark>
-      <v-toolbar-title>FLEMG</v-toolbar-title>
+      <v-toolbar-title>{{this.name}}</v-toolbar-title>
     </v-toolbar>
     <v-tabs vertical>
       <v-tab v-for="detail in GetCategories(details)" v-bind:key="detail.category">
@@ -27,6 +27,7 @@ export default {
   props: ['id'],
   data () {
     return {
+      name: null,
       details: null
     }
   },
@@ -36,25 +37,28 @@ export default {
   methods: {
     FetchDetails () {
       var app = this
-      axios.get(process.env.API_URL + '/detail/meme/' + app.id)
-        .then(function (response) {
-          var details = new Map()
-          response.data.forEach(detail => {
-            if (!details.has(detail.category)) {
-              details.set(detail.category, [])
-            }
+      const fetchName = axios.get(process.env.API_URL + '/meme/' + app.id)
+      const fetchDetails = axios.get(process.env.API_URL + '/detail/meme/' + app.id)
 
-            details.get(detail.category).push({
-              'summary': detail.summary,
-              'description': detail.description
-            })
+      axios.all([fetchName, fetchDetails]).then(axios.spread((...responses) => {
+        const resName = responses[0]
+        const resDetails = responses[1]
+        var details = new Map()
+
+        resDetails.data.forEach(detail => {
+          if (!details.has(detail.category)) {
+            details.set(detail.category, [])
+          }
+
+          details.get(detail.category).push({
+            'summary': detail.summary,
+            'description': detail.description
           })
+        })
 
-          app.details = details
-        })
-        .catch(function (error) {
-          console.log(error)
-        })
+        app.name = resName.data.name
+        app.details = details
+      })).catch(errors => console.log(errors))
     },
     GetCategories (m) {
       if (m != null) {
