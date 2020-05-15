@@ -1,3 +1,4 @@
+from django.http import Http404
 from rest_framework import status
 from rest_framework.response import Response
 from rest_framework.views import APIView
@@ -11,6 +12,16 @@ class MemeList(APIView):
         memes = Meme.objects.all()
         serializer = MemeSerializer(memes, many=True)
         return Response(serializer.data)
+
+
+class MemeDetail(APIView):
+    def get(self, request, id):
+        try:
+            meme = Meme.objects.get(pk=id)
+            serializer = MemeSerializer(meme)
+            return Response(serializer.data)
+        except Meme.DoesNotExist:
+            raise Http404
 
 
 class MemeDetails(APIView):
