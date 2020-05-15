@@ -27,7 +27,7 @@ class Detail(models.Model):
     category = models.CharField(max_length=30)
     summary = models.CharField(max_length=30)
     description = models.TextField()
-    remark = models.CharField(max_length=30)
+    remark = models.CharField(max_length=30, null=True, blank=True)
 
     def __str__(self):
-        return self.category + ' ' + self.summary
+        return self.category + ' / ' + self.summary
