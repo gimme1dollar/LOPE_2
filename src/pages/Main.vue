@@ -1,5 +1,15 @@
 <template>
-  <v-treeview :items="memes"></v-treeview>
+  <v-treeview :items="memes">
+    <template slot="label" slot-scope="props">
+      <v-card color="#385F73" dark>
+        <v-card-title class="headline">{{ props.item.name }}</v-card-title>
+        <v-card-subtitle>{{ props.item.description }}</v-card-subtitle>
+        <v-card-actions>
+          <v-btn :to="props.item.to">Details</v-btn>
+        </v-card-actions>
+      </v-card>
+    </template>
+  </v-treeview>
 </template>
 
 <script>
@@ -18,7 +28,9 @@ export default {
     CreateNode (meme) {
       var newNode = {
         id: meme.id,
-        name: meme.name + ': Description of Project',
+        name: meme.name,
+        description: 'Description of Project',
+        to: '/meme/' + meme.id,
         children: []
       }
 
