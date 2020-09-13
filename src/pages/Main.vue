@@ -1,74 +1,46 @@
 <template>
-  <v-treeview :items="memes">
-    <template slot="label" slot-scope="props">
-      <v-card color="#385F73" dark>
-        <v-card-title class="headline">{{ props.item.name }}</v-card-title>
-        <v-card-subtitle>{{ props.item.description }}</v-card-subtitle>
-        <v-card-actions>
-          <v-btn :to="props.item.to">Details</v-btn>
-        </v-card-actions>
-      </v-card>
-    </template>
-  </v-treeview>
+  <v-card
+    class="mx-auto"
+    max-width="434"
+    tile
+  >
+    <v-img
+      height="100%"
+      src="https://cdn.vuetifyjs.com/images/cards/server-room.jpg"
+    >
+      <v-row
+        align="end"
+        class="fill-height"
+      >
+        <v-col
+          align-self="start"
+          class="pa-0"
+          cols="12"
+        >
+          <v-avatar
+            class="profile"
+            color="grey"
+            size="164"
+            tile
+          >
+            <v-img src="https://cdn.vuetifyjs.com/images/profiles/marcus.jpg"></v-img>
+          </v-avatar>
+        </v-col>
+        <v-col class="py-0">
+          <v-list-item
+            color="rgba(0, 0, 0, .4)"
+            dark
+          >
+            <v-list-item-content>
+              <v-list-item-title class="title">Marcus Obrien</v-list-item-title>
+              <v-list-item-subtitle>Network Engineer</v-list-item-subtitle>
+            </v-list-item-content>
+          </v-list-item>
+        </v-col>
+      </v-row>
+    </v-img>
+  </v-card>
 </template>
 
 <script>
-import axios from 'axios'
-
-export default {
-  data () {
-    return {
-      memes: null
-    }
-  },
-  mounted: function () {
-    this.FetchMemes()
-  },
-  methods: {
-    CreateNode (meme) {
-      var newNode = {
-        id: meme.id,
-        name: meme.name,
-        description: 'Description of Project',
-        to: '/meme/' + meme.id,
-        children: []
-      }
-
-      return newNode
-    },
-    DFS (node, graph) {
-      var app = this
-      graph.forEach(edge => {
-        if (edge.parent === node.id) {
-          var newNode = app.CreateNode(edge)
-          app.DFS(newNode, graph)
-          node.children.push(newNode)
-        }
-      })
-    },
-    CreateTree (data) {
-      var app = this
-      var tree = []
-      data.forEach(meme => {
-        if (meme.parent == null) {
-          var newNode = app.CreateNode(meme)
-          app.DFS(newNode, data)
-          tree.push(newNode)
-        }
-      })
-      console.log(tree)
-      app.memes = tree
-    },
-    FetchMemes () {
-      var app = this
-      axios.get(process.env.API_URL + '/meme')
-        .then(function (response) {
-          app.CreateTree(response.data)
-        })
-        .catch(function (error) {
-          console.log(error)
-        })
-    }
-  }
-}
 </script>

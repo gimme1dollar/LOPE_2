@@ -1,16 +1,18 @@
 <template>
   <div id="app">
-  <v-app>
-  <v-app-bar app/>
-
-  <v-content>
-    <v-container fluid>
-      <router-view></router-view>
-    </v-container>
-  </v-content>
-
-  <v-footer app/>
-</v-app>
+    <v-app>
+      <v-main>
+        <v-container fluid>
+          <v-app-bar>
+            <v-toolbar-title>Cross</v-toolbar-title>
+            <v-spacer/>
+            <v-btn text to="/">Home</v-btn>
+            <v-btn text to="/meme">Memes</v-btn>
+          </v-app-bar>
+          <router-view/>
+        </v-container>
+      </v-main>
+    </v-app>
   </div>
 </template>
 

@@ -1,8 +1,16 @@
-from .models import Meme, Detail
+from .models import Meme, Detail, Property
 from rest_framework import serializers
 
 
+class PropertySerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Property
+        fields = ['property']
+
+
 class MemeSerializer(serializers.ModelSerializer):
+    properties = PropertySerializer(many=True, read_only=True)
+
     class Meta:
         model = Meme
         fields = '__all__'
