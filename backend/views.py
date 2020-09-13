@@ -8,8 +8,8 @@ from .serializers import MemeSerializer, DetailSerializer
 
 
 class MemeList(APIView):
-    def get(self, request, format=None):
-        memes = Meme.objects.all()
+    def get(self, request, phase):
+        memes = Meme.objects.filter(phase=phase)
         serializer = MemeSerializer(memes, many=True)
         return Response(serializer.data)
 
