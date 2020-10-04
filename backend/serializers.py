@@ -5,7 +5,7 @@ from rest_framework import serializers
 class PropertySerializer(serializers.ModelSerializer):
     class Meta:
         model = Property
-        fields = ['property']
+        fields = '__all__'
 
 
 class MemeSerializer(serializers.ModelSerializer):

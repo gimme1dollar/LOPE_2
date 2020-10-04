@@ -4,7 +4,33 @@ from rest_framework.response import Response
 from rest_framework.views import APIView
 
 from .models import Meme, Detail
-from .serializers import MemeSerializer, DetailSerializer
+from .serializers import MemeSerializer, DetailSerializer, PropertySerializer
+
+
+class MemeInfo(APIView):
+    def post(self, request):
+        meme = request.data
+        serializer = MemeSerializer(data=meme)
+
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
+        else:
+            return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+
+class MemeProperty(APIView):
+    def post(self, request, meme):
+        prop = request.data
+        prop["meme"] = meme
+
+        serializer = PropertySerializer(data=prop)
+
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
+        else:
+            return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
 class MemeList(APIView):
